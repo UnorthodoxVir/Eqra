@@ -1,0 +1,167 @@
+/************************** Search Filter RTL **************************/
+.ui.category.search > .results .category .result {
+    margin: 0 120px 0 0;
+}
+.ui.category.search > .results .category > .name {
+    float: right;
+}
+.ui.category.search > .results .category .result {
+    border-left: 0;
+    border-right: 1px solid #dedeef;
+}
+
+
+
+
+
+
+/************************** Mega Menu RTL **************************/
+@media only screen and (min-width: 767px) {
+    .cd-dropdown {
+        left: initial;
+        right: 0;
+    }
+}
+.cd-dropdown-wrapper {
+    margin: 0 0 0 10px;
+}
+.cd-dropdown-trigger > .menu-icon {
+    margin-left: 7px;
+    margin-right: 0;
+}
+.has-children > a {
+    padding-right: 15px;
+    padding-left: 30px;
+}
+.has-children > a::before, .has-children > a::after {
+    left: 15px;
+    right: auto;
+    -webkit-transform-origin: 0px 50%;
+    -moz-transform-origin: 0px 50%;
+    -ms-transform-origin: 0px 50%;
+    -o-transform-origin: 0px 50%;
+    transform-origin: 0px 50%;
+}
+.has-children > a::before, .go-back a::before {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+.has-children > a::after, .go-back a::after {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+@media only screen and (min-width: 768px) {
+    .cd-dropdown-content .cd-secondary-dropdown, .cd-dropdown-content .cd-dropdown-icons {
+        -webkit-transform: translateX(0);
+        -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+        -o-transform: translateX(0);
+        transform: translateX(0);
+        left: 0;
+        right: 100%;
+        height: auto;
+        background-color: #ffffff;
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+    } 
+}
+@media only screen and (max-width: 767px) {
+    .cd-dropdown {
+        display: none;
+    }
+    .cd-dropdown.dropdown-is-active {
+        position: fixed;
+        top: 80px;
+        right: 10px;
+        left: 10px;
+        bottom: 10px;
+        border-radius: 0 0 10px 10px;
+        overflow: auto;
+        display: block;
+    }
+    .has-children > a {
+        color: #1273eb;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .cd-dropdown-content, .cd-dropdown-content ul {
+        position: relative;
+        width: auto;
+        left: 0;
+    }
+    .cd-dropdown-content .cd-secondary-dropdown > li {
+        width: 100%;
+    }
+    .cd-dropdown-content > .has-children > ul {
+        visibility: visible;
+    }
+    .cd-dropdown-content .cd-secondary-dropdown {
+        position: relative;
+        left: 0;
+        width: auto;
+        box-shadow: none;
+        max-height: 100%;
+    }
+}
+
+
+
+/************************** Apex Graphs RTL **************************/
+.apexcharts-legend-marker {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+
+
+/************************** Datatable RTL **************************/
+table.dataTable td .media-box img.media-avatar {
+    margin: 0 0 0 10px;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+    float: left;
+}
+div.table-responsive>div.dataTables_wrapper>div.row>div[class^="col-"]:first-child {
+    padding-right: 0;
+}
+div.table-responsive>div.dataTables_wrapper>div.row>div[class^="col-"]:last-child {
+    padding-left: 0;
+}
+div.dataTables_wrapper div.dataTables_filter {
+    text-align: left;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: 0;
+    margin-right: 0.5em;
+}
+table.dataTable th {
+    padding: .8rem .5rem;
+}
+table.dataTable td .media-box img.media-avatar-lg {
+    margin: 0 0 0 10px;
+}
+
+
+
+/************************** Notify RTL **************************/
+.notify.notify-notes {
+    left: 20px;
+    right: auto;
+}
+.notify .note .remove {
+    left: 10px;
+    right: auto;
+}
+
+
+
+/************************** Apex RTL **************************/
+.apexcharts-canvas * {
+    direction: ltr;
+    text-align: left;
+}

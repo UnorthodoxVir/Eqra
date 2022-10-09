@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Eqra.ViewModels.UsersViewModel>
+
+
+<script>
+
+    function editRole(id) {
+
+        $("#editRoleModal").modal('show')
+        $("#userId").val(id)
+    }
+
+    $(document).ready(function() {
+
+
+        $("#btnEditRole").click(function() {
+
+            var model = JSON.stringify({
+                id: $("#userId").val(),
+                role: $("#roleList").val()
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/Dashboard/EditRole",
+                data: model,
+                success: function() { location.reload() },
+                error: function() { alert("Error!!") }
+            })
+        })
+
+
+    })
+
+</script>
+
+
+
+<h3>المستخدمين</h3>
+<div class="row gutters">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table v-middle">
+                        <thead>
+                            <tr>
+                                <th>اسم العميل</th>
+                                <th>الايميل</th>
+                                <th>الرتبة</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td hidden>@item.Id</td>
+                                    <td><h5>@item.Username</h5></td>
+                                    <td><h5>@item.Email</h5></td>
+                                    <td><h5>@item.Role</h5></td>
+
+                                    @if (item.Role == "مشرف")
+                                    {
+                                        <td><a onclick="editRole('@item.Id')" class="btn btn-danger">تعديل رتبة</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a onclick="editRole('@item.Id')" class="btn btn-secondary">تعديل رتبة</a></td>
+
+                                    }
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editRoleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">رتبة جديدة</h5>
+            </div>
+            <form class="needs-validation has-error">
+                <input hidden type="text" id="userId" />
+                <div class="modal-body">
+                    <div class="form-group ">
+                        <label class="control-label justify-content-start d-flex">الرتبة</label>
+                        <select id="roleList" class="form-select" asp-items="@ViewBag.Roles"></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-bs-dismiss="modal"><i class="flaticon-cancel-12"></i> الغاء</button>
+                    <button type="button" id="btnEditRole" title="Add" class="btn btn-primary">انشاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
