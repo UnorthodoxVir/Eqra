@@ -1,0 +1,29 @@
+﻿@model Eqra.Models.Book
+
+<h1>كتاب @Model.Name</h1>
+
+<br />
+
+<embed src="/Books/@Model.Content" width="1500" height="1000" />
+<div class="row gutters">
+    <div class="col-6">
+        <div class="row gutters">
+            @if (ViewBag.CanTakeExam)
+            {
+                <div class="col-6">
+                    <a asp-action="TakeQuiz" asp-controller="Quizzes" asp-route-id="@Model.Id" class="btn btn-success  w-100">اخذ اختبار الكتاب</a>
+                </div>
+            }
+            else
+            {
+                <div class="col-6">
+                    <button disabled class="btn btn-success  w-100">اخذ اختبار الكتاب (لقد قمت بأخذ الاختبار سابقا)</button>
+                </div>
+            }
+            <div class="col-6">
+                <a asp-action="Index" asp-controller="Home" type="button" class="btn btn-secondary  w-100">العودة الى الرئيسية</a>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,359 @@
+﻿@model Eqra.ViewModels.CreateBookViewModel
+
+
+
+<h1>انشاء كتاب</h1>
+<div class="row">
+    <div class="col-md-12 card p-4">
+        <form class="row g-3" asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input asp-for="Name" type="text" class="form-control">
+                            <div class="field-placeholder">اسم الكتاب</div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select asp-for="Genre" asp-items="Html.GetEnumSelectList<Eqra.Models.Enum.Genre>()" class="form-select"></select>
+                            <div class="field-placeholder">تصنيف الكتاب</div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Genre" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input asp-for="Pages" type="number" min="0" class="form-control">
+                            <div class="field-placeholder">عدد الصفحات</div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Pages" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input asp-for="ReleaseDate" type="datetime-local" min="0" class="form-control">
+                            <div class="field-placeholder">تاريخ الانشاء</div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input asp-for="CoverPath" type="file" class="form-control form-control-lg" accept="image/*">
+                            <div class="field-placeholder">الغلاف</div>
+                        </div>
+                        <span asp-validation-for="CoverPath" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <input asp-for="ContentPath" type="file" class="form-control form-control-lg" accept="application/pdf">
+                            <div class="field-placeholder">المحتوى</div>
+                        </div>
+                        <span asp-validation-for="ContentPath" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
+                <div class="card-header">
+                    <h3 class="text-secondary">سؤال 1</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gutters p-3 border rounded mb-5 shadow">
+                        <div class="col-12">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q1.Content" id="q" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">السؤال</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q1.A1" id="a1" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار أ</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q1.A2" id="a2" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ب</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q1.A3" id="a3" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ج</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q1.A4" id="a4" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار د</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="field-wrapper">
+                                <select asp-for="@Model.Q1.CorrectAnswer" id="correctAnswer" class="form-select">
+                                    <option value="1">أ</option>
+                                    <option value="2">ب</option>
+                                    <option value="3">ج</option>
+                                    <option value="4">د</option>
+
+                                </select>
+                                <div class="field-placeholder">الجواب الصحيح</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
+                <div class="card-header">
+                    <h3 class="text-secondary">سؤال 2</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gutters p-3 border rounded mb-5 shadow">
+                        <div class="col-12">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q2.Content" id="q" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">السؤال</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q2.A1" id="a1" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار أ</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q2.A2" id="a2" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ب</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q2.A3" id="a3" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ج</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q2.A4"  id="a4" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار د</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="field-wrapper">
+                                <select asp-for="@Model.Q2.CorrectAnswer" id="correctAnswer" class="form-select">
+                                    <option value="1">أ</option>
+                                    <option value="2">ب</option>
+                                    <option value="3">ج</option>
+                                    <option value="4">د</option>
+
+                                </select>
+                                <div class="field-placeholder">الجواب الصحيح</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
+                <div class="card-header">
+                    <h3 class="text-secondary">سؤال 3</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gutters p-3 border rounded mb-5 shadow">
+                        <div class="col-12">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q3.Content" id="q" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">السؤال</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q3.A1" id="a1" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار أ</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q3.A2" id="a2" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ب</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q3.A3" id="a3" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ج</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q3.A4" id="a4" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار د</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="field-wrapper">
+                                <select asp-for="@Model.Q3.CorrectAnswer" id="correctAnswer" class="form-select">
+                                    <option value="1">أ</option>
+                                    <option value="2">ب</option>
+                                    <option value="3">ج</option>
+                                    <option value="4">د</option>
+
+                                </select>
+                                <div class="field-placeholder">الجواب الصحيح</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
+                <div class="card-header">
+                    <h3 class="text-secondary">سؤال 4</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gutters p-3 border rounded mb-5 shadow">
+                        <div class="col-12">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q4.Content" id="q" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">السؤال</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q4.A1" id="a1" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار أ</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q4.A2" id="a2" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ب</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q4.A3" id="a3" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ج</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q4.A4" id="a4" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار د</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="field-wrapper">
+                                <select asp-for="@Model.Q4.CorrectAnswer" id="correctAnswer" class="form-select">
+                                    <option value="1">أ</option>
+                                    <option value="2">ب</option>
+                                    <option value="3">ج</option>
+                                    <option value="4">د</option>
+
+                                </select>
+                                <div class="field-placeholder">الجواب الصحيح</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
+                <div class="card-header">
+                    <h3 class="text-secondary">سؤال 5</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row gutters p-3 border rounded mb-5 shadow">
+                        <div class="col-12">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q5.Content" id="q" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">السؤال</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q5.A1" id="a1" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار أ</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q5.A2" id="a2" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ب</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q5.A3" id="a3" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار ج</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-wrapper">
+                                <input asp-for="@Model.Q5.A4" id="a4" class="form-control form-control-lg qField">
+                                <div class="field-placeholder">خيار د</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="field-wrapper">
+                                <select asp-for="@Model.Q5.CorrectAnswer" id="correctAnswer" class="form-select">
+                                    <option value="1">أ</option>
+                                    <option value="2">ب</option>
+                                    <option value="3">ج</option>
+                                    <option value="4">د</option>
+
+                                </select>
+                                <div class="field-placeholder">الجواب الصحيح</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <br /><br />
+            <div class="form-group">
+                <input type="submit" value="انشاء" class="btn btn-primary" /> <a class="btn btn-secondary" asp-action="Index">العودة الى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>

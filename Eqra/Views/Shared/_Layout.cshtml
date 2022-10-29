@@ -1,83 +1,8 @@
 ﻿<!doctype html>
 <html lang="ar" dir="rtl">
 
-<!-- Required jQuery first, then Bootstrap Bundle JS -->
-<script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/modernizr.js"></script>
-<script src="/js/moment.js"></script>
-
 <!-- Sweet Alert 2-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-<script>
-
-    $(document).ready(function() {
-
-        $("#popModal").click(function() {
-            $("#applyForAuthor").modal('show')
-        })
-
-        $("#bio").on('input', function() {
-
-            if (300 - $("#bio").val().length <= 15) {
-                $("#charLength").addClass("text-danger")
-            }
-            else {
-                $("#charLength").removeClass("text-danger")
-            }
-
-            $("#charLength").html(300 - $("#bio").val().length)
-
-        })
-
-
-        $("#submit").click(function() {
-
-            if ($("#txtName").val() == "") {
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطأ',
-                    text: 'يجب ادخال الاسم',
-                })
-
-                return
-            }
-
-            var model = JSON.stringify({
-                name: $("#txtName").val(),
-                genre: $("#genre").val(),
-                numberOfBooks: $("#numberOfBooks").val(),
-                bio: $("#bio").val()
-            })
-
-            console.log(model)
-            
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                url: "/Requests/Create",
-                data: model,
-                success: function() { $("#applyForAuthor").modal('hide') },
-                error: function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'خطأ',
-                        text: 'حدث خطأ في الطلب, حاول مجددا',
-                    })
-                }
-            })
-
-        })
-
-
-    })
-
-</script>
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -86,45 +11,56 @@
     <!-- Meta -->
     <meta name="description" content="Responsive Bootstrap4 Dashboard Template">
     <meta name="author" content="ParkerThemes">
-    <link rel="shortcut icon" href="/img/fav.png">
+    <link rel="shortcut icon" href="~/img/fav.png">
 
     <!-- Title -->
-    <title>Uni Pro Admin Template - Admin Dashboard</title>
+    <title>منصة إقرأ</title>
+
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
 
 
     <!-- *************
         ************ Common Css Files *************
     ************ -->
     <!-- Bootstrap css -->
-    <link rel="stylesheet" href="/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap.rtl.min.css">
 
     <!-- Icomoon Font Icons css -->
-    <link rel="stylesheet" href="/fonts/style.css">
+    <link rel="stylesheet" href="~/fonts/style.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="/css/main-rtl.css">
+    <link rel="stylesheet" href="~/css/main-rtl.css">
+
+
 
 
     <!-- *************
         ************ Vendor Css Files *************
     ************ -->
     <!-- Mega Menu -->
-    <link rel="stylesheet" href="/vendor/megamenu/css/megamenu.css">
+    <link rel="stylesheet" href="~/vendor/megamenu/css/megamenu.css">
 
     <!-- Search Filter JS -->
-    <link rel="stylesheet" href="/vendor/search-filter/search-filter.css">
-    <link rel="stylesheet" href="/vendor/search-filter/custom-search-filter.css">
+    <link rel="stylesheet" href="~/vendor/search-filter/search-filter.css">
+    <link rel="stylesheet" href="~/vendor/search-filter/custom-search-filter.css">
 
     <!-- Uploader CSS -->
-    <link rel="stylesheet" href="/vendor/dropzone/dropzone.min.css" />
+    <link rel="stylesheet" href="~/vendor/dropzone/dropzone.min.css" />
 
     <!-- Bootstrap Select CSS -->
-    <link rel="stylesheet" href="/vendor/bs-select/bs-select.css" />
+    <link rel="stylesheet" href="~/vendor/bs-select/bs-select.css" />
 
     <!-- Plugins Customization RTL -->
-    <link rel="stylesheet" href="/css/plugins-rtl.css">
+    <link rel="stylesheet" href="~/css/plugins-rtl.css">
 
 
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="~/vendor/datatables/dataTables.bs4.css" />
+    <link rel="stylesheet" href="~/vendor/datatables/dataTables.bs4-custom.css" />
+    <link href="~/vendor/datatables/buttons.bs.css" rel="stylesheet" />
 
 
 </head>
@@ -153,6 +89,12 @@
                 <div class="defaultSidebarMenuScroll">
                     <div class="default-sidebar-menu">
                         <ul>
+                            <li>
+                                <a asp-action="Index" asp-controller="Home">
+                                    <i class="icon-home2"></i>
+                                    <span class="menu-text"> الرئيسية</span>
+                                </a>
+                            </li>
                             <li class="default-sidebar-dropdown">
                                 <a href="#">
                                     <i class="icon-clipboard"></i>
@@ -167,19 +109,6 @@
                                 </div>
                             </li>
 
-                            <li class="default-sidebar-dropdown">
-                                <a href="#">
-                                    <i class="icon-clipboard"></i>
-                                    <span class="menu-text"> الطلبات</span>
-                                </a>
-                                <div class="default-sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#"> العمل مع المنصة</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
 
                             @if (User.IsInRole("مشرف"))
                             {
@@ -211,7 +140,7 @@
                                     <div class="default-sidebar-submenu">
                                         <ul>
                                             <li>
-                                                <a href="/Dashboard/Index">رفع الكتب</a>
+                                                <a href="/Books/Index">قائمة الكتب</a>
                                             </li>
                                             <li>
                                                 <a href="#">احصائيات الكتب</a>
@@ -756,9 +685,8 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end md" aria-labelledby="userSettings">
                                     <div class="header-profile-actions">
-                                        <a href="user-profile.html"><i class="icon-user1"></i>Profile</a>
-                                        <a href="account-settings.html"><i class="icon-settings1"></i>Settings</a>
-                                        <a asp-action="Logout" asp-controller="Account"><i class="icon-log-out1"></i>Logout</a>
+                                        <a asp-action="Profile" asp-controller="Account"><i class="icon-user1"></i>الملف الشخصي</a>
+                                        <a asp-action="Logout" asp-controller="Account"><i class="icon-log-out1"></i>تسجيل الخروج</a>
                                     </div>
                                 </div>
                             </li>
@@ -797,6 +725,8 @@
         ************* -->
 
     </div>
+
+
     <!-- Page wrapper end -->
     <!-- *************
         ************ Required JavaScript Files *************
@@ -804,6 +734,12 @@
     <!-- *************
         ************ Vendor Js Files *************
     ************* -->
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/modernizr.js"></script>
+    <script src="~/js/moment.js"></script>
+
+
     <!-- Megamenu JS -->
     <script src="/vendor/megamenu/js/megamenu.js"></script>
     <script src="/vendor/megamenu/js/custom.js"></script>
@@ -826,6 +762,14 @@
     <!-- Main Js Required -->
     <script src="/js/main.js"></script>
 
+    <!-- Download / CSV / Copy / Print -->
+    <script src="~/vendor/datatables/buttons.min.js"></script>
+    <script src="~/vendor/datatables/jszip.min.js"></script>
+    <script src="~/vendor/datatables/pdfmake.min.js"></script>
+    <script src="~/vendor/datatables/vfs_fonts.js"></script>
+    <script src="~/vendor/datatables/html5.min.js"></script>
+    <script src="~/vendor/datatables/buttons.print.min.js"></script>
+
 
 
 </body>
@@ -847,7 +791,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group ">
-                                <label class="control-label justify-content-start d-flex">التصنيف<label class="text-danger">*</label></label>
+                                <label class="control-label justify-content-start d-flex">التصنيف المفضل<label class="text-danger">*</label></label>
                                 <select id="genre" class="form-select" asp-items="Html.GetEnumSelectList<Eqra.Models.Enum.Genre>()">
                                 </select>
                             </div>
@@ -879,5 +823,94 @@
     </div>
 </div>
 
+<script>
+
+    $(document).ready(function() {
+
+        $("#popModal").click(function() {
+            $("#applyForAuthor").modal('show')
+        })
+
+        $("#bio").on('input', function() {
+
+            if (300 - $("#bio").val().length <= 15) {
+                $("#charLength").addClass("text-danger")
+            }
+            else {
+                $("#charLength").removeClass("text-danger")
+            }
+
+            $("#charLength").html(300 - $("#bio").val().length)
+
+        })
+
+
+        $("#submit").click(function() {
+
+            if ($("#txtName").val() == "") {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'يجب ادخال الاسم',
+                })
+
+                return
+            }
+
+            var model = JSON.stringify({
+                name: $("#txtName").val(),
+                genre: $("#genre").val(),
+                numberOfBooks: $("#numberOfBooks").val(),
+                bio: $("#bio").val()
+            })
+
+            console.log(model)
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/Requests/Create",
+                data: model,
+                success: function(data) {
+
+                    console.log(data)
+
+                    if (data.correct == true) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم',
+                            text: 'تم ارسال طلبك بنجاح',
+                        })
+
+                        $("#applyForAuthor").modal('hide')
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'لقد قمت بتقديم طلب سابقا',
+                        })
+                    }
+
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: 'حدث خطأ في الطلب, حاول مجددا',
+                    })
+                }
+            })
+
+        })
+
+
+    })
+
+</script>
 
 </html>

@@ -1,0 +1,176 @@
+﻿@model List<Eqra.Models.Book>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#tbl').DataTable({
+            ordering: true,
+            paging: true,
+            searching: true,
+            order: [[0, "desc"]]
+        });
+
+
+    })
+
+    function Del(identifier) {
+        var model = JSON.stringify({
+            id: identifier
+        })
+
+        console.log(model)
+
+        Swal.fire({
+            title: 'هل انت متأكد من حذف هذا الكتاب؟',
+            showCancelButton: true,
+            confirmButtonText: 'حذف',
+            cancelButtonText: 'الغاء'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    url: "/Books/Delete",
+                    type: 'POST',
+                    data: model,
+                    dataType: 'Json',
+                    beforeSend: function() {
+                        Swal.fire({
+                            icon: 'info',
+                            html: 'يتم الحذف',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        })
+                    },
+                    success: function() {
+                        Swal.close()
+                        Swal.fire({
+                            icon: 'success',
+                            html: 'تم حذف الكتاب بنجاح!',
+                            showConfirmButton: false
+                        })
+                        location.reload()
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('لم يتم حفظ التغييرات', '', 'info')
+            }
+        })
+    }
+
+</script>
+
+<h3>الكتب</h3>
+
+@*<div class="card">
+    <div class="row">
+        <div class="col-md-8 p-4">
+            <form asp-action="EntryReport">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                                    <div class="field-wrapper">
+                                        <input type="date" asp-for="StartDate" class="form-control" />
+                                        <div class="field-placeholder">من:</div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                                    <div class="field-wrapper">
+                                        <input type="date" asp-for="EndDate" class="form-control" />
+                                        <div class="field-placeholder">الى:</div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="التصفية" class="btn btn-secondary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+<br />
+<div class="row">
+    <div class="col">
+        <a asp-action="Create" class="btn btn-primary">اضافة كتاب جديد</a>
+    </div>
+</div>
+
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="tbl" class="table v-middle">
+                <thead>
+                    <tr>
+                        <th>
+                            الغلاف
+                        </th>
+                        <th>
+                            اسم الكتاب
+                        </th>
+                        <th>
+                            التصنيف
+                        </th>
+                        <th>
+                            عدد الصفحات
+                        </th>
+                        <th>
+                            تاريخ الانشاء
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img width="50" height="50" src="~/Books/Covers/@item.Cover">
+                            </td>
+                            <td>
+                                <h5>@Html.DisplayFor(modelItem => item.Name)</h5>
+                            </td>
+                            <td>
+                                <h5>@Html.DisplayFor(modelItem => item.Genre)</h5>
+                            </td>
+                            <td>
+                                <h5>
+                                    @Html.DisplayFor(modelItem => item.Pages)
+                                </h5>
+                            </td>
+                            <td>
+                                <h5>
+                                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                                </h5>
+                            </td>
+                            <td>
+                                
+                                <h4 style="display:inline" class="text-danger"><a onclick="Del('@item.Id')"><span class="icon-trash-2"></span></a></h4> &nbsp;
+                                <h4 style="display:inline" class="text-danger"><a asp-action="Details" asp-route-id="@item.Id"><span class="icon-receipt"></span></a></h4> &nbsp;
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

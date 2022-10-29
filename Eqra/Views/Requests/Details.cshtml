@@ -1,0 +1,87 @@
+﻿@model Eqra.Models.Request
+
+@{
+    ViewData["Title"] = "تفاصيل الكاتب";
+}
+
+<div class="row gutters">
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>الاسم</h3>
+            <h2>@Model.Name</h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>البريد الالكتروني</h3>
+            <h2>@Model.Email</h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>عدد الكتب التي تم اصدارها</h3>
+            <h2>@Model.NumberOfBooks</h2>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>تصنيف الكتب</h3>
+            <h2>@Model.Genre</h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>رقم الجوال</h3>
+            <h2>@Model.PhoneNumber</h2>
+        </div>
+    </div>
+</div>
+<div class="row gutters">
+    <div class="card">
+        <div class="card-header">
+            <h1>نبذة عن الكاتب</h1>
+        </div>
+        <div class="card-body">
+            @if (Model.Bio.Length == 0)
+            {
+                <h1>💔 لم يقم الكاتب بكتابة اي معلومات عنه </h1>
+            }
+            else
+            {
+                <h3>@Model.Bio</h3>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="row gutters">
+    <div class="col-6">
+        <div class="row gutters">
+            <div class="col-6">
+                <a asp-action="RequestAccept" asp-route-id="@Model.Id" type="button" class="btn btn-success  w-100">قبول الطلب</a>
+            </div>
+            <div class="col-6">
+                <a asp-action="RequestDecline" asp-route-id="@Model.Id" type="button" class="btn btn-danger  w-100">رفض الطلب</a>
+            </div>
+        </div>
+
+    </div>
+</div>

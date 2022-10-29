@@ -1,0 +1,142 @@
+﻿@model Eqra.ViewModels.UserProfileViewModel
+
+<script>
+
+    $(document).ready(function() {
+
+        $("#update").click(function() {
+
+
+            var model = JSON.stringify({
+                email: $("#email").val(),
+                currentPassword: $("#currPw").val(),
+                newPassword: $("#newPw").val()
+            })
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/Account/UpdateInfo",
+                type: "POST",
+                data: model,
+                beforeSend: function() {
+                    Swal.fire({
+                        icon: 'info',
+                        html: 'يتم تحديث المعلومات.....',
+                        showConfirmButton: false
+                    })
+                },
+                success: function(data) {
+                    Swal.close()
+                    Swal.fire({
+                        icon: 'success',
+                        html: 'تم التغيير بنجاح',
+                        showConfirmButton: false
+                    })
+                }
+            })
+
+        })
+
+    })
+
+</script>
+
+<div class="content-wrapper-scroll">
+
+    <!-- Content wrapper start -->
+    <div class="content-wrapper">
+
+        <!-- Row start -->
+        <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <div class="profile-header">
+                    <h1>مرحبا, @Model.Name</h1>
+                    <div class="profile-header-content">
+                        <div class="profile-header-tiles">
+                            <div class="row gutters">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                    <div class="profile-tile">
+                                        <span class="icon">
+                                            <i class="icon-server"></i>
+                                        </span>
+                                        <h6>الاسم - <span>@Model.Name</span></h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                    <div class="profile-tile">
+                                        <span class="icon">
+                                            <i class="icon-phone1"></i>
+                                        </span>
+                                        <h6>الجوال - <span>@Model.Phone</span></h6>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                    <div class="profile-tile">
+                                        <h6>نوع المستخدم - <span>@Model.UserType</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                            <div class="field-wrapper">
+                                <input id="email" style="direction:rtl" asp-for="Email" type="email" value="@Model.Email" class="form-control form-control-lg">
+                                <div class="field-placeholder">البريد الالكتروني</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                            <div class="field-wrapper">
+                                <input style="direction:rtl" id="currPw" type="password" class="form-control form-control-lg">
+                                <div class="field-placeholder">كلمة المرور الحالية</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                            <div class="field-wrapper">
+                                <input style="direction:rtl" id="newPw" type="password" class="form-control form-control-lg">
+                                <div class="field-placeholder">كلمة المرور الجديدة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <a id="update" class="btn btn-primary">تحديث</a>
+                </div>
+
+            </div>
+        </div>
+        <!-- Row end -->
+        <!-- Row start -->
+        <!-- Row end -->
+
+    </div>
+    <!-- Content wrapper end -->
+    <!-- App Footer start -->
+    <!-- App footer end -->
+
+</div>
+<!-- Content wrapper scroll end -->

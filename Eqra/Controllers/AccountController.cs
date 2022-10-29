@@ -39,8 +39,9 @@ namespace Eqra.Controllers
                 UserName = model.Email,
                 Email = model.Email,
                 EmailConfirmed = true,
-                Name = model.Email,
-                PhoneNumber = model.PhoneNumber
+                Name = model.Name,
+                PhoneNumber = model.PhoneNumber,
+                LockoutEnabled = false
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -66,7 +67,7 @@ namespace Eqra.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            await _signInManager.SignInAsync(user, isPersistent: true);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
             return Redirect("/Home/");
         }
 
@@ -75,5 +76,57 @@ namespace Eqra.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("login", "Account");
         }
+
+
+        public async Task<IActionResult> Profile()
+        {
+            var userLogged = await _userManager.GetUserAsync(User);
+
+            var model = new UserProfileViewModel()
+            {
+                Email = userLogged.Email,
+                Phone = userLogged.PhoneNumber,
+                Name = userLogged.Name
+            };
+
+            if (User.IsInRole("مستخدم"))
+                model.UserType = "مستخدم";
+            if (User.IsInRole("كاتب"))
+                model.UserType = "كاتب";
+            if (User.IsInRole("مشرف"))
+                model.UserType = "مشرف";
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<JsonResult> UpdateInfo([FromBody] UpdateInfoViewModel model)
+        {
+            var userLogged = await _userManager.GetUserAsync(User);
+            var PasswordResult = new IdentityResult();
+            var EmailResult = new IdentityResult();
+            if(model.NewPassword != null)
+            {
+                PasswordResult = await _userManager.ChangePasswordAsync(userLogged, model.CurrentPassword, model.NewPassword);
+
+                
+            }
+            if(model.Email != userLogged.Email)
+            {
+                var token = await _userManager.GenerateChangeEmailTokenAsync(userLogged, model.Email);
+                EmailResult = await _userManager.ChangeEmailAsync(userLogged, model.Email, token);
+
+            }
+            
+            if(PasswordResult.Succeeded)
+            {
+                return Json(new { correct = true });
+            }
+            else
+            {
+                return Json(new { correct = false });
+            }
+
+        }
+
     }
 }

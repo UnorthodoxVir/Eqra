@@ -12,11 +12,13 @@ namespace Eqra.Controllers
     {
 
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
 
-        public RequestsController(UserManager<User> userManager, ApplicationDbContext context)
+        public RequestsController(UserManager<User> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
@@ -27,11 +29,44 @@ namespace Eqra.Controllers
             return View(_context.Requests.ToList());
         }
 
+        [Authorize(Roles = "مشرف")]
         // GET: RequestsController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
-            return View();
+            var request = _context.Requests.Where(o => o.Id == id).FirstOrDefault();
+
+            return View(request);
         }
+
+        public async Task<ActionResult> RequestAccept(Guid id)
+        {
+            var request = _context.Requests.Where(o => o.Id == id).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
+            await _userManager.AddToRoleAsync(user, "كاتب");
+
+            _context.Requests.Remove(request);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", _context.Requests.ToList());
+            
+        }
+        public async Task<ActionResult> RequestDecline(Guid id)
+        {
+            var request = _context.Requests.Where(o => o.Id == id).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+
+
+            _context.Requests.Remove(request);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", _context.Requests.ToList());
+        }
+
 
         // GET: RequestsController/Create
         public ActionResult Create()
@@ -45,6 +80,13 @@ namespace Eqra.Controllers
         {
             var userLogged = await _userManager.GetUserAsync(User);
 
+            var result = _context.Requests.Where(o => o.UserId == userLogged.Id).FirstOrDefault();
+
+            if(result != null)
+            {
+                return Json(new {correct = false});
+            }
+
             var request = new Request()
             {
                 Email = userLogged.Email,
@@ -52,14 +94,14 @@ namespace Eqra.Controllers
                 PhoneNumber = userLogged.PhoneNumber,
                 Name = model.Name,
                 NumberOfBooks = model.NumberOfBooks,
-                Genre = Models.Enum.Genre.دراما,
+                Genre = (Models.Enum.Genre)model.Genre,
                 UserId = userLogged.Id
             };
 
             _context.Requests.Add(request);
             _context.SaveChanges();
 
-            return Json(new {});
+            return Json(new {correct = true});
         }
 
         // GET: RequestsController/Edit/5

@@ -1,0 +1,301 @@
+﻿@model Eqra.ViewModels.BookDetailsViewModel
+
+@{
+    ViewData["Title"] = "تفاصيل الكاتب";
+}
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#tbl').DataTable({
+            ordering: false,
+            paging: false,
+            searching: false,
+            order: [[0, "desc"]]
+        });
+
+        $("#btnReview").click(function() {
+
+            if ($("#txtReview").val() == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'يجب تعبئة حقل الانطباع',
+                })
+                return
+            }
+            else {
+                var model = JSON.stringify({
+                    userId: '@ViewBag.UserId',
+                    bookId: '@ViewBag.BookId',
+                    content: $("#txtReview").val()
+                })
+
+
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: "/Reviews/Create",
+                    type: "POST",
+                    data: model,
+                    success: function(data) {
+                        $("#reviews").append('        <div class="col-12">            <div class="card">                <div class="card-header">                    <h3 class="text-primary">' + data.review.user.name + '</h3>                </div>                <div class="card-body">                    <h4>                        ' + data.review.content + '                    </h4>                </div>                <div class="card-footer">                    ' + data.review.date + '                </div>            </div>        </div>')
+                        $("#txtReview").val("")
+                    }
+                })
+
+            }
+
+        })
+
+        $("#btnSubmit").click(function() {
+
+            var model = JSON.stringify({
+                bookId: '@Model.Book.Id',
+                rating: $("#ratingval").val()
+            })
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/Rating/RateBook",
+                type: "POST",
+                data: model,
+                success: function(data) {
+
+                    if (!data.correct) {
+                        if (data.isAuthor) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطأ',
+                                text: 'لايمكنك تقييم كتابك',
+                            })
+                        }
+                        else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطأ',
+                                text: 'لقد قمت بالفعل بتقييم هذا الكتاب',
+                            })
+                        }
+                    }
+                    else {
+                        $("#rating").html(data.overallRating.toFixed(1) + "/5")
+                    }
+
+                }
+            })
+
+        })
+
+    })
+
+
+
+
+</script>
+
+<div class="row gutters">
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h5>اسم الكتاب</h5>
+            <h4>@Model.Book.Name</h4>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h4>التصنيف</h4>
+            <h5>@Model.Book.Genre</h5>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h4>عدد الصفحات</h4>
+            <h5>@Model.Book.Pages</h5>
+        </div>
+    </div>
+    <div class="col">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h4>تاريخ الاصدار</h4>
+            <h5>@Model.Book.ReleaseDate.Year</h5>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <div class="social-tile h-180">
+            <div class="social-graph">
+                <div id="chart1"></div>
+            </div>
+            <h3>الغلاف</h3>
+            <img width="290" height="390" src="/Books/Covers/@Model.Book.Cover" />
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="social-tile">
+                    <div class="social-graph">
+                        <div id="chart1"></div>
+                    </div>
+                    <h3>الكاتب</h3>
+                    <h2>@Model.Book.Author.Name</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="social-tile">
+                    <div class="social-graph">
+                        <div id="chart1"></div>
+                    </div>
+                    <h3>عدد الزيارات</h3>
+                    <h2>@Model.Book.Views</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="social-tile">
+                    <div class="social-graph">
+                        <div id="chart1"></div>
+                    </div>
+                    <h3>التقييم</h3>
+                    <div class="row">
+                        <div class="col">
+                            <h1 id="rating">@Math.Round(Model.Book.Rating,1)/5 </h1>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <h4>تقييمك</h4>
+                            <input id="ratingval" type="number" min="0" max="5" value="0" step="1" class="form-control" />
+                            <a id="btnSubmit" class="btn btn-primary">تسليم</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row gutters">
+    <div class="col-6">
+        <div class="row gutters">
+            <div class="col-6">
+                <a asp-action="Details" asp-route-id="@Model.Book.Id" asp-controller="Books" type="button" class="btn btn-primary btn-lg  w-100"><h4>قراءة الكتاب</h4></a>
+            </div>
+            <div class="col-6">
+                <a asp-action="Index" type="button" class="btn btn-secondary btn-lg  w-100"><h4>العودة الى الرئيسية</h4></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<br />
+<br />
+
+<div id="reviews" class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h1>الانطباعات</h1>
+            </div>
+            <div class="card-body">
+                <div class="col">
+                    <textarea id="txtReview" rows="4" class="form-control"></textarea>
+                    <br />
+                    <a id="btnReview" class="btn btn-primary">ارسال</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var item in Model.Reviews)
+    {
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="text-primary">@item.User.Name</h3>
+                </div>
+
+                <div class="card-body">
+                    <h4>
+                        @item.Content
+                    </h4>
+                </div>
+
+                <div class="card-footer">
+                    @item.Date
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h1>كتب مشابهة لهذا الكتاب</h1>
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="tbl" class="table v-middle">
+                <thead>
+                    <tr>
+                        <th>
+                            الغلاف
+                        </th>
+                        <th>
+                            الاسم
+                        </th>
+                        <th>
+                            عدد الصفحات
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SuggestedBooks)
+                    {
+
+                        <tr>
+                            <td>
+                                <img width="50" height="50" src="/Books/Covers/@item.Cover">
+                            </td>
+                            <td>
+                                <h5>@Html.DisplayFor(modelItem => item.Name)</h5>
+                            </td>
+                            <td>
+                                <h5>@Html.DisplayFor(modelItem => item.Pages)</h5>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id">زيارة <span class="icon-receipt"></span></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

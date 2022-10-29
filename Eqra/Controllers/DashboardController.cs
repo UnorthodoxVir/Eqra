@@ -26,10 +26,10 @@ namespace Eqra.Controllers
             var users = _userManager.Users.Select(c => new UsersViewModel()
             {
                 Id = c.Id,
-                Username = c.UserName,
+                Username = c.Name,
                 Email = c.Email,
                 Role = string.Join(",", _userManager.GetRolesAsync(c).Result.ToArray())
-            }).ToList();
+            }).ToList().OrderByDescending(o=>o.Role == "مشرف");
 
 
             ViewBag.Roles = new SelectList(_roleManager.Roles.ToList(), "Name", "Name");

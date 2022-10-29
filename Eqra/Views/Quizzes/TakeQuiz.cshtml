@@ -1,0 +1,134 @@
+﻿@model IEnumerable<Eqra.Models.Question>
+
+<h1>اختبار الكتاب</h1>
+<br />
+<br />
+
+<script>
+
+    $(document).ready(function() {
+
+        $("#btnSubmit").click(function() {
+
+            $(".answer").each(function() {
+                if ($(this).val() == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        html: 'لم تقم بالاجابة عن جميع الاسئلة',
+                        showConfirmButton: false
+                    })
+                    return
+                }
+            })
+
+            var answerslist = []
+
+            $(".answer").each(function() {
+                answerslist.push($(this).val())
+            })
+
+            var model = JSON.stringify({
+                bookId: '@Model.FirstOrDefault().BookId',
+                Q1Answer: answerslist[0],
+                Q2Answer: answerslist[1],
+                Q3Answer: answerslist[2],
+                Q4Answer: answerslist[3],
+                Q5Answer: answerslist[4],
+
+            })
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/Quizzes/SubmitQuiz",
+                type: "POST",
+                data: model,
+                beforeSend: function() {
+                    Swal.fire({
+                        icon: 'info',
+                        html: 'يتم تسليم الاختبار.....',
+                        showConfirmButton: false
+                    })
+                },
+                success: function(data) {
+
+                    if (data.correct) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '🎉 تهانينا ',
+                            html: 'لقد قمت باجتياز الاختبار, تم اضافة 10 نقاط الى حسابك وسوف يتم تحويلك الى الصفحة الرئيسية بعد 5 ثواني!',
+                            showConfirmButton: false
+                        })
+                    }
+
+                    setTimeout(function() { 
+
+                        Swal.close()
+                        location.href = "/Home/"
+
+                    }, 5000)
+
+                }
+            })
+
+        })
+
+    })
+
+</script>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-12 ">
+            <div class="card p-3 border rounded mb-5 shadow-lg">
+                <div class="card-header">
+                    <h2>@item.Content</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>
+                                أ- @item.A1
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <h4>
+                                ب- @item.A2
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <h4>
+                                ج- @item.A3
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <h4>
+                                د- @item.A4
+                            </h4>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+
+                        <div>
+                            <label>الاجابة الصحيحة</label>
+                            <select class="form-select answer">
+                                <option value="0">---اختر---</option>
+                                <option value="1">أ</option>
+                                <option value="2">ب</option>
+                                <option value="3">ج</option>
+                                <option value="4">د</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-2">
+        <a id="btnSubmit" class="btn btn-success w-100">تسليم</a>
+    </div>
+</div>

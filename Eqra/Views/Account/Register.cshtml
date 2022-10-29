@@ -72,6 +72,10 @@
                                 </a>
                                 <h6>مرحبا بك في منصة E-Book<br>قم بإدخال بياناتك للتسجيل</h6>
                                 <div class="field-wrapper">
+                                    <input id="txtName" type="tel" autofocus>
+                                    <div class="field-placeholder">الاسم</div>
+                                </div>
+                                <div class="field-wrapper">
                                     <input id="txtPhone" type="tel" autofocus>
                                     <div class="field-placeholder">رقم الجوال</div>
                                 </div>
@@ -84,7 +88,7 @@
                                     <div class="field-placeholder">كلمة المرور</div>
                                 </div>
                                 <div class="field-wrapper mb-3">
-                                    <input type="password">
+                                    <input id="confirmPw" type="password">
                                     <div class="field-placeholder">تأكيد كلمة المرور</div>
                                 </div>
                                 <div class="actions">
@@ -132,6 +136,16 @@
 
 
         $("#btnSubmit").click(function() {
+
+            if ($("#txtName").val() == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'يجب ادخال الاسم',
+                })
+                return
+            }
+
             if ($("#txtEmail").val() == "") {
                 Swal.fire({
                     icon: 'error',
@@ -159,7 +173,19 @@
                 return
             }
 
+            if ($("#txtPassword").val() !== $("#confirmPw").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'كلمة المرور غير متطابقة',
+                })
+
+
+                return
+            }
+
             var model = JSON.stringify({
+                name: $("#txtName").val(),
                 email: $("#txtEmail").val(),
                 password: $("#txtPassword").val(),
                 phoneNumber: $("#txtPhone").val()
