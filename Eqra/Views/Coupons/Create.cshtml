@@ -1,0 +1,54 @@
+﻿@model Eqra.Models.Coupon
+<h1>انشاء كوبون</h1>
+
+
+<div class="card">
+    <div class="card-header">
+        <h2>معلومات الكوبون</h2>
+    </div>
+    <form asp-action="Create" method="post">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <div class="field-wrapper">
+                        <input asp-for="Sponsor" id="txtName" style="direction:rtl" class="form-control form-control-lg">
+                        <div class="field-placeholder">اسم الراعي</div>
+                    </div>
+                </div>
+                <input hidden value="0"  />
+                <div class="col">
+                    <div class="field-wrapper">
+                        <input asp-for="Cost" type="number" class="form-control" min="10" step="1" />  
+                        <div class="field-placeholder">التكلفة (نقاط)</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="field-wrapper">
+                        <input asp-for="EndingDate" type="date" class="form-control"/>
+                        <label class="small text-danger">يجب ان لايكون تاريخ الانتهاء قبل تاريخ اليوم</label><div class="field-placeholder">تاريخ انتهاء الكوبون</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="field-wrapper">
+                        <textarea asp-for="Info" cols="3" class="form-control">
+
+                        </textarea>
+                        <div class="field-placeholder">وصف الكوبون</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-3">
+                    <a asp-action="Index" asp-controller="Shop" class="btn btn-secondary w-100">العودة الى متجر النقاط</a>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary w-100">انشاء</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -95,19 +95,30 @@
                                     <span class="menu-text"> الرئيسية</span>
                                 </a>
                             </li>
-                            <li class="default-sidebar-dropdown">
-                                <a href="#">
-                                    <i class="icon-clipboard"></i>
-                                    <span class="menu-text"> الكتب</span>
+
+
+                            <li>
+                                <a asp-action="BookSearch" asp-controller="Books">
+                                    <i class="icon-search"></i>
+                                    <span class="menu-text"> بحث الكتب</span>
                                 </a>
-                                <div class="default-sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#"> بحث الكتب</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
+
+                            <li>
+                                <a asp-action="Index" asp-controller="Shop">
+                                    <i class="icon-shopping-bag1"></i>
+                                    <span class="menu-text"> متجر النقاط</span>
+                                </a>
+                            </li>
+                            @if (User.IsInRole("كاتب"))
+                            {
+                                <li class="default-sidebar-dropdown">
+                                    <a href="#">
+                                        <i class="icon-book"></i>
+                                        <span class="menu-text"> الكتب</span>
+                                    </a>
+                                </li>
+                            }
 
 
                             @if (User.IsInRole("مشرف"))

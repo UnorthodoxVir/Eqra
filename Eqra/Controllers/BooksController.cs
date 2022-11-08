@@ -52,10 +52,93 @@ namespace Eqra.Controllers
             return View();
         }
 
-        public IActionResult BookSearch()
+        public IActionResult BookSearch(BookSearchViewModel model)
         {
+            if (model.Visiting == 1)
+            {
+                model.Books = new List<Book>();
+                return View(model);
+            }
 
-            return View();
+
+            var books = _context.Books.ToList();
+
+
+            if(model.Name != null)
+            {
+                books = books.Where(o => o.Name == model.Name).ToList();
+            }
+            if(model.Lanuage != 0)
+            {
+                books = books.Where(o=>o.BookLanuage == model.Lanuage).ToList();
+            }
+            if(model.Genre != 0)
+            {
+                books = books.Where(o => o.Genre == model.Genre).ToList();
+            }
+            if(model.Year != 0)
+            {
+                books = books.Where(o=>o.ReleaseDate.Year == model.Year).ToList();
+            }
+            if(model.Views != 0)
+            {
+                if(model.Views == 1)
+                {
+                    books = books.Where(o=>o.Views <= 10).ToList();
+                }
+                if (model.Views == 2)
+                {
+                    books = books.Where(o => o.Views >= 10).ToList();
+                }
+                if (model.Views == 3)
+                {
+                    books = books.Where(o => o.Views >= 50).ToList();
+                }
+                if (model.Views == 4)
+                {
+                    books = books.Where(o => o.Views >= 100).ToList();
+                }
+                if (model.Views == 5)
+                {
+                    books = books.Where(o => o.Views >= 150).ToList();
+                }
+                if (model.Views == 6)
+                {
+                    books = books.Where(o => o.Views >= 200).ToList();
+                }
+            }
+
+            if(model.Pages != 0)
+            {
+                if(model.Pages == 1)
+                {
+                    books = books.Where(o=>o.Pages <= 100).ToList();
+                }
+                if (model.Pages == 2)
+                {
+                    books = books.Where(o => o.Pages >= 100).ToList();
+                }
+                if (model.Pages == 3)
+                {
+                    books = books.Where(o => o.Pages >= 150).ToList();
+                }
+                if (model.Pages == 4)
+                {
+                    books = books.Where(o => o.Pages >= 200).ToList();
+                }
+                if (model.Pages == 5)
+                {
+                    books = books.Where(o => o.Pages >= 250).ToList();
+                }
+                if (model.Pages == 6)
+                {
+                    books = books.Where(o => o.Pages >= 300).ToList();
+                }
+            }
+
+            model.Books = books;
+
+            return View(model);
         }
 
         // POST: BooksController/Create

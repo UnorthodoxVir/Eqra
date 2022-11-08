@@ -43,7 +43,17 @@ namespace Eqra.Controllers
                 PhoneNumber = model.PhoneNumber,
                 LockoutEnabled = false
             };
+
+            var emails = _userManager.Users.Select(o => o.Email).ToList();
+
+            if (emails.Contains(user.Email))
+            {
+                return Json(new { correct = false });
+            }
+
             var result = await _userManager.CreateAsync(user, model.Password);
+
+
 
             if (result.Succeeded)
             {

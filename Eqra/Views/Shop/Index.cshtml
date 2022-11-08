@@ -1,0 +1,378 @@
+﻿@model List<Eqra.Models.Coupon>
+<h1>متجر النقاط</h1>
+
+@if (User.IsInRole("مشرف"))
+{
+    <div class="row">
+        <div class="col-3">
+            <a asp-action="Create" asp-controller="Coupons" class="btn btn-primary">
+                اضافة كوبون جديد
+            </a>
+        </div>
+    </div>
+    <br />
+}
+
+
+<script>
+
+
+    function Confirm(id) {
+
+
+        var model = JSON.stringify({
+            id: id
+        })
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            url: "/Coupons/CheckPoints",
+            type: "POST",
+            data: model,
+            beforeSend: function() {
+                Swal.fire({
+                    icon: 'info',
+                    html: 'يتم التحقق من النقاط.....',
+                    showConfirmButton: false
+                })
+            },
+            success: function(data) {
+
+                if (data.correct == true) {
+
+                    Swal.fire({
+                        title: 'هل أنت متأكد؟',
+                        text: "عند اتمام العملية, سيتم سحب نقاط من حسابك",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'نعم',
+                        cancelButtonText: 'الغاء',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+
+                            $.ajax({
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                url: "/Coupons/UseCoupon",
+                                type: "POST",
+                                data: model,
+                                beforeSend: function() {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        html: 'يتم تفعيل الكوبون.....',
+                                        showConfirmButton: false
+                                    })
+                                },
+                                success: function(data) {
+
+                                    Swal.close()
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'تهانينا 🎉',
+                                        text: 'تم تفعيل الكوبون بنجاح, رمزك هو ' + data.code,
+                                    })
+
+                                }
+                            })
+
+
+                        }
+                    })
+
+                }
+                else {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: 'عدد نقاطك غير كافي لاستعمال هذا الكوبون',
+                    })
+
+
+                }
+
+
+            }
+        })
+
+    }
+
+    $(document).ready(function() {
+
+
+
+    })
+
+</script>
+
+<!-- Row start -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <!-- Card start -->
+        <div class="card">
+            <div class="card-header">
+                <h1>كوبونات المنصة</h1>
+            </div>
+            <div class="card-body">
+
+                <div class="custom-tabs-container">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="first-tab" data-bs-toggle="tab" href="#first" role="tab" aria-controls="first" aria-selected="true">ماهذه الصفحة 🤔</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">كيف يمكنني الحصول على رمز الكوبون 🤔</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">كيف يمكنني الحصول على نقاط 🤔 </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="fourth-tab" data-bs-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">كم عدد الجهات التي ترعى هذه المنصة 🤔 </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="first" role="tabpanel">
+
+                            <h4 class="text-muter">
+                                هذه الصفحة عبارة عن قائمة تحتوي على كوبونات خصم مقدمة من الداعمين للمنصة
+                            </h4>
+
+                        </div>
+                        <div class="tab-pane fade" id="second" role="tabpanel">
+                            <h4 class="text-muter">اضغط على الحصول على الرمز وسيتم التحقق من عدد نقاطك, اذا كانت كمية النقاط مناسبة سيتم ارسال الرمز على هاتفك</h4>
+                        </div>
+
+                        <div class="tab-pane fade" id="third" role="tabpanel">
+                            <h4 class="text-muter">يمكن الحصول على النقاط عن طريق حل اختبارات الكتب بشكل صحيح</h4>
+                        </div>
+
+                        <div class="tab-pane fade" id="fourth" role="tabpanel">
+
+                            <h4 class="text-muter">البحث مستمر لإيجاد داعمين, للتواصل على الايميل Eqra@gmail.com</h4>
+
+                        </div>
+                        <div class="tab-pane fade" id="fourth" role="tabpanel">
+
+                            <p class="text-muter">Websites and Web applications have become progressively more complex as our industry’s technologies and methodologies advance. What used to be a one-way static medium has evolved into a very rich and interactive experience.</p>
+
+                        </div>
+                        <div class="tab-pane fade" id="fifth" role="tabpanel">
+
+                            <p class="text-muter">User experience (abbreviated as UX) is how a person feels when interfacing with a system. The system could be a website, a web application or desktop software and, in modern contexts, is generally denoted by some form of human-computer interaction.</p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Card end -->
+
+    </div>
+</div>
+<!-- Row end -->
+@if (User.IsInRole("مستخدم"))
+{
+    <div class="card">
+        <div class="card-header">
+            <h3>عدد النقاط: <a class="text-success">@ViewBag.Points</a></h3>
+        </div>
+    </div>
+}
+
+
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="dl">
+                <div class="brand">
+                    <h2>
+                        @item.Sponsor
+                    </h2>
+                </div>
+
+                <div class="discount peter-river">
+                    @item.Cost نقاط
+                    <div class="type">
+                        @item.Info
+                    </div>
+                </div>
+                <div class="descr text-center">
+                    <h3>
+                        الكوبون ساري حتى
+                    </h3>
+                    <h3>
+                        @item.EndingDate.Day/@item.EndingDate.Month/@item.EndingDate.Year
+                    </h3>
+
+                </div>
+
+
+                <a onclick="Confirm('@item.Id')">
+                    <div class="coupon midnight-blue">
+                        الحصول على الرمز
+                    </div>
+                    <br>
+
+                </a>
+
+                @if (User.IsInRole("مشرف"))
+                {
+
+                    <a asp-action="Delete" asp-controller="Coupons" asp-route-id="@item.Id">
+                        <label class="text-danger">حذف الكوبون</label>
+                    </a>
+                }
+
+
+            </div>
+        </div>
+    }
+
+</div>
+
+
+<style>
+    section {
+        padding: 5% 0
+    }
+
+    .alizarin {
+        background: #e74c3c
+    }
+
+    .amethyst {
+        background: #9b59b6
+    }
+
+    .emerald {
+        background: #3da76a
+    }
+
+    .used {
+        background: #d14141
+    }
+
+    .midnight-blue {
+        background: #2c3e50;
+        color: white
+    }
+
+    .peter-river {
+        background: #3498db
+    }
+
+    .dl {
+        background: #dedeef /*#d4d4dd*/;
+        padding: 30px 0;
+        border-radius: 20px;
+        position: relative;
+        margin: 5px;
+    }
+
+        .dl:before {
+            content: " ";
+            height: 20px;
+            width: 20px;
+            background: #efeff7;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            margin-left: -10px
+        }
+
+        .dl .brand {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 15px;
+            margin-top: 0px;
+            text-align: center;
+            min-height: 100px
+        }
+
+        .dl .discount {
+            min-height: 50px;
+            position: relative;
+            font-size: 55px;
+            line-height: 80px;
+            text-align: center;
+            font-weight: 700;
+            padding: 20px 15px 0;
+            color: #f1c40f
+        }
+
+            .dl .discount:after {
+                content: " ";
+                border-right: 20px solid transparent;
+                border-left: 20px solid transparent;
+                position: absolute;
+                bottom: -20px;
+                left: 20%
+            }
+
+            .dl .discount.alizarin:after {
+                border-top: 20px solid #e74c3c
+            }
+
+            .dl .discount.peter-river:after {
+                border-top: 20px solid #3498db
+            }
+
+            .dl .discount.emerald:after {
+                border-top: 20px solid #2ecc71
+            }
+
+            .dl .discount.amethyst:after {
+                border-top: 20px solid #9b59b6
+            }
+
+            .dl .discount .type {
+                font-size: 20px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-top: -30px
+            }
+
+        .dl .descr {
+            color: #000;
+            margin-top: 10px;
+            padding: 20px 15px
+        }
+
+        .dl .ends {
+            padding: 0 15px;
+            color: #f1c40f;
+            margin-bottom: 10px
+        }
+
+        .dl .coupon {
+            min-height: 50px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 20px 15px
+        }
+
+            .dl .coupon a.open-code {
+                color: #ffffff
+            }
+
+            .dl .coupon .code {
+                letter-spacing: 1px;
+                border-radius: 4px;
+                margin-top: 10px;
+                padding: 10px 15px;
+                color: #f1c40f;
+                background: #f0f0f0
+            }
+</style>

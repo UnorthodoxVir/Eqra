@@ -25,7 +25,18 @@
                 dataType: "json",
                 url: "/Dashboard/EditRole",
                 data: model,
-                success: function() { location.reload() },
+                success: function(data) {
+                    if (data.correct) {
+                        location.reload()
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'لايمكن تعديل رتبة الكاتب (يوجد كتب مسجلة باسم هذا الكاتب, قم بحذفها قبل تعديل الرتبة)',
+                        })
+                    }
+                },
                 error: function() { alert("Error!!") }
             })
         })

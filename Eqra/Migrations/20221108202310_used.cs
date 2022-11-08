@@ -4,23 +4,23 @@
 
 namespace Eqra.Migrations
 {
-    public partial class lang : Migration
+    public partial class used : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "BookLanuage",
-                table: "Books",
-                type: "int",
+            migrationBuilder.AddColumn<bool>(
+                name: "Used",
+                table: "Coupons",
+                type: "bit",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BookLanuage",
-                table: "Books");
+                name: "Used",
+                table: "Coupons");
         }
     }
 }

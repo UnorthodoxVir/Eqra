@@ -1,5 +1,6 @@
 using Eqra.Data;
 using Eqra.Models;
+using Eqra.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
 });
 
+builder.Services.AddScoped<CodeGeneratorService>();
 
 
 var app = builder.Build();

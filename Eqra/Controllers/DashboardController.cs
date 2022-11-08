@@ -1,4 +1,5 @@
-﻿using Eqra.Models;
+﻿using Eqra.Data;
+using Eqra.Models;
 using Eqra.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,27 +15,35 @@ namespace Eqra.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public DashboardController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        private readonly ApplicationDbContext _context;
+        public DashboardController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ApplicationDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _context = context; 
         }
 
         // GET: DashboardController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var users = _userManager.Users.Select(c => new UsersViewModel()
-            {
-                Id = c.Id,
-                Username = c.Name,
-                Email = c.Email,
-                Role = string.Join(",", _userManager.GetRolesAsync(c).Result.ToArray())
-            }).ToList().OrderByDescending(o=>o.Role == "مشرف");
 
+            var users = _userManager.Users.ToList();
+            var model = new List<UsersViewModel>();
+
+            foreach (var user in users)
+            {
+                model.Add(new UsersViewModel()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Username = user.Name,
+                    Role = string.Join(",", _userManager.GetRolesAsync(user).Result.ToArray())
+                });
+            }
 
             ViewBag.Roles = new SelectList(_roleManager.Roles.ToList(), "Name", "Name");
 
-            return View(users);
+            return View(model);
         }
 
         // GET: DashboardController/Details/5
@@ -112,10 +121,17 @@ namespace Eqra.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
 
+            var books = _context.Books.Where(o => o.AuthorId == user.Id).ToList();
+
+            if(books.Count != 0)
+            {
+                return Json(new { correct = false });
+            }
+
             await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
             await _userManager.AddToRoleAsync(user, model.Role);
           
-            return Json(new { });
+            return Json(new {correct = true});
         }
 
 

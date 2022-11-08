@@ -4,23 +4,23 @@
 
 namespace Eqra.Migrations
 {
-    public partial class rating : Migration
+    public partial class code : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<double>(
-                name: "Rating",
-                table: "Books",
-                type: "float",
+            migrationBuilder.AddColumn<string>(
+                name: "Code",
+                table: "Coupons",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: 5.0);
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Rating",
-                table: "Books");
+                name: "Code",
+                table: "Coupons");
         }
     }
 }

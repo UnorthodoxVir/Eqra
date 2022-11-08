@@ -11,8 +11,8 @@
 
         public enum BookLanuage
         {
-            عربي,
-            انجليزي
+            عربي=1,
+            انجليزي=2
         }
 
         public enum Genre

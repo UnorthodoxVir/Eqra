@@ -5,28 +5,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Eqra.Migrations
 {
-    public partial class @lock : Migration
+    public partial class Coupon : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ExamLockouts",
+                name: "Coupons",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Cost = table.Column<int>(type: "int", nullable: false),
+                    Sponsor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Info = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EndingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExamLockouts", x => x.Id);
+                    table.PrimaryKey("PK_Coupons", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExamLockouts");
+                name: "Coupons");
         }
     }
 }
