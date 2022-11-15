@@ -46,10 +46,18 @@ namespace Eqra.Controllers
             return View(model);
         }
 
-        // GET: DashboardController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public async Task<ActionResult> ManageBooks()
         {
-            return View();
+
+            var books = _context.Books.ToList();
+
+            foreach(var book in books)
+            {
+                book.Author = await _userManager.FindByIdAsync(book.AuthorId);
+            }
+
+            return View(books);
         }
 
         // GET: DashboardController/Create

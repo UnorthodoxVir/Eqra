@@ -136,6 +136,8 @@ namespace Eqra.Controllers
                 }
             }
 
+
+
             model.Books = books;
 
             return View(model);
@@ -185,6 +187,7 @@ namespace Eqra.Controllers
                 Views = 0,
                 Cover = coverFileName,
                 Content = contentFileName,
+                BookLanuage = model.Lanuage
             };
 
             _context.Books.Add(book);
@@ -235,10 +238,29 @@ namespace Eqra.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Delete([FromBody] BookDelViewModel model)
+        public JsonResult Delete([FromBody] BookDelViewModel model)
         {
-            var userLogged = await _userManager.GetUserAsync(User);
             var book = _context.Books.Where(o => o.Id == model.Id).FirstOrDefault();
+            var reviews = _context.Reviews.Where(o => o.BookId == book.Id).ToList();
+            var examLockouts = _context.ExamLockouts.Where(o => o.BookId == book.Id).ToList();
+            var questions = _context.Questions.Where(o => o.BookId == book.Id).ToList();
+
+            foreach(var review in reviews)
+            {
+                _context.Reviews.Remove(review);
+                _context.SaveChanges();
+            }
+            foreach(var examLockout in examLockouts)
+            {
+                _context.ExamLockouts.Remove(examLockout);
+                _context.SaveChanges();
+            }
+            foreach(var question in questions)
+            {
+                _context.Questions.Remove(question);
+                _context.SaveChanges();
+            }
+
             _context.Books.Remove(book);
             _context.SaveChanges();
             return Json(new { });

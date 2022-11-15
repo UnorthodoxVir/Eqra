@@ -82,7 +82,23 @@
                 </div>
             </div>
 
-            
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="field-wrapper">
+                            <select asp-for="Lanuage" asp-items="Html.GetEnumSelectList<Eqra.Models.Enum.BookLanuage>()" class="form-select">
+                                
+                            </select>
+                            <div class="field-placeholder">اللغة</div>
+                        </div>
+                        <span asp-validation-for="ContentPath" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
 
             <div class="card" style="margin-bottom: 0px; margin-top: 0px;">
                 <div class="card-header">
@@ -168,7 +184,7 @@
                         </div>
                         <div class="col-6">
                             <div class="field-wrapper">
-                                <input asp-for="@Model.Q2.A4"  id="a4" class="form-control form-control-lg qField">
+                                <input asp-for="@Model.Q2.A4" id="a4" class="form-control form-control-lg qField">
                                 <div class="field-placeholder">خيار د</div>
                             </div>
                         </div>

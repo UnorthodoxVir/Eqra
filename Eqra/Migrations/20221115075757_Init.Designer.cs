@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eqra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221106195153_Coupon")]
-    partial class Coupon
+    [Migration("20221115075757_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,6 +77,10 @@ namespace Eqra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
@@ -90,6 +94,9 @@ namespace Eqra.Migrations
                     b.Property<string>("Sponsor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -112,6 +119,28 @@ namespace Eqra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExamLockouts");
+                });
+
+            modelBuilder.Entity("Eqra.Models.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Eqra.Models.Question", b =>

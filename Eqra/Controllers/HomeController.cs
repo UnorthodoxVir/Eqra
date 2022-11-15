@@ -96,5 +96,32 @@ namespace Eqra.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult ChatPartial()
+        {
+
+            var messages = _context.Messages.ToList();
+
+            return PartialView("_Chat", messages);
+        }
+        
+        public async Task<JsonResult> ChatMessage([FromBody] MessageViewModel model)
+        {
+            var userLogged = await _userManager.GetUserAsync(User);
+
+            var message = new Message()
+            {
+                Content = model.Content,
+                Date = DateTime.Now,
+                UserName = userLogged.Name
+            };
+
+            _context.Messages.Add(message);
+            _context.SaveChanges();
+
+
+            return Json(new {message = message});
+        }
+
     }
 }

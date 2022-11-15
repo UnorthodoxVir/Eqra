@@ -18,7 +18,7 @@
                         <div class="field-placeholder">اسم الكتاب</div>
                     </div>
                 </div>
-                <input hidden value="0" asp-for="@Model.Visiting"/>
+                <input hidden value="0" asp-for="@Model.Visiting" />
                 <div class="col">
                     <div class="field-wrapper">
                         <select asp-items="Html.GetEnumSelectList<Eqra.Models.Enum.BookLanuage>()" asp-for="@Model.Lanuage" class="form-select">
@@ -91,6 +91,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="card-footer">
             <div class="row">

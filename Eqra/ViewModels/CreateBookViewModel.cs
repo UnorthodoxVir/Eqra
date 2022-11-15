@@ -1,5 +1,4 @@
-﻿using Eqra.Migrations;
-using Eqra.Models;
+﻿using Eqra.Models;
 using Microsoft.EntityFrameworkCore;
 using static Eqra.Models.Enum;
 
@@ -14,7 +13,7 @@ namespace Eqra.ViewModels
         public DateTime ReleaseDate { get; set; }
         public IFormFile CoverPath { get; set; }
         public IFormFile ContentPath { get; set; }
-
+        public BookLanuage Lanuage { get; set; }
         public Question Q1 { get; set; }
         public Question Q2 { get; set; }
         public Question Q3 { get; set; }

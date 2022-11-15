@@ -19,6 +19,7 @@ namespace Eqra.Data
         public DbSet<ExamLockout> ExamLockouts { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
