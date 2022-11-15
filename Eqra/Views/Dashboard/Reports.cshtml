@@ -1,0 +1,114 @@
+﻿@model List<Eqra.Models.Report>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#tbl').DataTable({
+            ordering: true,
+            paging: true,
+            searching: true,
+            order: [[0, "desc"]]
+        });
+
+
+    })
+
+
+</script>
+
+<h3>الكتب</h3>
+
+@*<div class="card">
+    <div class="row">
+        <div class="col-md-8 p-4">
+            <form asp-action="EntryReport">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                                    <div class="field-wrapper">
+                                        <input type="date" asp-for="StartDate" class="form-control" />
+                                        <div class="field-placeholder">من:</div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-lg-12 col-12">
+                                    <div class="field-wrapper">
+                                        <input type="date" asp-for="EndDate" class="form-control" />
+                                        <div class="field-placeholder">الى:</div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="submit" value="التصفية" class="btn btn-secondary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+<br />
+<div class="row">
+    <div class="col">
+        <a asp-action="Create" class="btn btn-primary">اضافة كتاب جديد</a>
+    </div>
+</div>
+
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="tbl" class="table v-middle">
+                <thead>
+                    <tr>
+                        <th>
+                            المستخدم
+                        </th>
+                        <th>
+                            العنوان
+                        </th>
+                        <th>
+                            المحتوى
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <h4>@item.User.Name</h4>
+                            </td>
+                            <td>
+                                <h4>@item.Title</h4>
+                            </td>
+                            <td>
+                                <h5>@item.Content</h5>
+                            </td>
+                            <td>
+                                <h4 style="display:inline" class="text-danger"><a asp-action="Delete" asp-route-id="@item.Id"><span class="icon-trash-2"></span></a></h4> &nbsp;
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

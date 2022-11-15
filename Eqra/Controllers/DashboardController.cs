@@ -60,6 +60,19 @@ namespace Eqra.Controllers
             return View(books);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Reports()
+        {
+            var reports = _context.Reports.ToList();
+
+            foreach(var report in reports)
+            {
+                report.User = await _userManager.FindByIdAsync(report.UserId);
+            }
+
+            return View(reports);
+        }
+
         // GET: DashboardController/Create
         public ActionResult Create()
         {
@@ -102,26 +115,15 @@ namespace Eqra.Controllers
             }
         }
 
-        // GET: DashboardController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
-            return View();
+            var report = _context.Reports.Where(o => o.Id == id).FirstOrDefault();
+            _context.Reports.Remove(report);
+            _context.SaveChanges();
+            return RedirectToAction("Reports");
         }
 
         // POST: DashboardController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         public async Task<JsonResult> EditRole([FromBody] EditRoleViewModel model)
         {

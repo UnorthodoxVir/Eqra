@@ -1,0 +1,27 @@
+﻿@model Eqra.Models.Report
+
+<h1>الشكاوي والاقتراحات</h1>
+<form asp-action="MakeReport" method="post">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <div class="field-wrapper">
+                        <input asp-for="Title" type="text" class="form-control" width="100%">
+                        <div class="field-placeholder">العنوان</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="field-wrapper">
+                        <textarea maxlength="300" asp-for="Content" class="form-control" rows="5"></textarea>
+                        <div class="field-placeholder">العنوان</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" class="btn btn-secondary" asp-controller="Home">العودة الى الرئيسية</a>
+                    <button type="submit"  class="btn btn-primary">تسليم</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

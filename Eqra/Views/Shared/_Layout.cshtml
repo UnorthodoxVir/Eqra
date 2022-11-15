@@ -130,6 +130,9 @@
                                             <li>
                                                 <a asp-action="ManageBooks" asp-controller="Dashboard">ادارة جميع الكتب</a>
                                             </li>
+                                            <li>
+                                                <a asp-action="Reports" asp-controller="Dashboard">الشكاوي والاقتراحات</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -152,6 +155,15 @@
                                 </li>
                             }
 
+                            @if (User.IsInRole("كاتب") || User.IsInRole("مستخدم"))
+                            {
+                                <li>
+                                    <a asp-action="MakeReport" asp-controller="Reports">
+                                        <i class="icon-message-square"></i>
+                                        <span class="menu-text"> الشكاوي والاقتراحات</span>
+                                    </a>
+                                </li>
+                            }
 
                         </ul>
                     </div>
