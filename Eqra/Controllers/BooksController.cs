@@ -37,7 +37,7 @@ namespace Eqra.Controllers
             var userLogged = await _userManager.GetUserAsync(User);
             ViewBag.CanTakeExam = true;
 
-            if (_context.ExamLockouts.Where(o=>o.UserId == userLogged.Id && o.BookId == book.Id).FirstOrDefault() != null)
+            if (_context.ExamLockouts.Where(o=>o.UserId == userLogged.Id && o.BookId == book.Id).FirstOrDefault() != null || User.IsInRole("كاتب") || User.IsInRole("مشرف"))
             {
                 ViewBag.CanTakeExam = false;
             }
